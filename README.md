@@ -34,7 +34,7 @@ mvn clean install
 java -jar target/crypto-recommendation-service-1.0-SNAPSHOT.jar
 ```
 
-The application will start running at `http://localhost:8080/swagger-ui.html`.
+The application will start running at [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html).
 
 If you want to run the application using `mvn spring-boot:run` command, makesure to copy `application.properties` to the root of the project.
 
@@ -59,7 +59,7 @@ docker run -p 8080:8080 crypto-recommendation-service
 
 ## Documentation
 
-The API documentation is available at `http://localhost:8080/swagger-ui.html`.
+The API documentation is available at [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html).
 
 
 ## Testing
