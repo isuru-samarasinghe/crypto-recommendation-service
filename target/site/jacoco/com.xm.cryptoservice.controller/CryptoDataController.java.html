@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CryptoDataController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">crypto-recommendation-service</a> &gt; <a href="index.source.html" class="el_package">com.xm.cryptoservice.controller</a> &gt; <span class="el_source">CryptoDataController.java</span></div><h1>CryptoDataController.java</h1><pre class="source lang-java linenums">package com.xm.cryptoservice.controller;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.xm.cryptoservice.model.CryptoDataSummary;
+import com.xm.cryptoservice.model.NormalizedData;
+import com.xm.cryptoservice.service.CryptoDataService;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
+@RestController
+@RequestMapping(&quot;/api/v1/crypto&quot;)
+<span class="fc" id="L29">public class CryptoDataController {</span>
+
+    @Autowired
+    private CryptoDataService cryptoDataService;
+
+    @ApiOperation(value = &quot;Returns a descending sorted list of all the cryptos, comparing the normalized range (i.e. (max-min)/min)&quot;)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = &quot;Successfully retrieved data.&quot;),
+            @ApiResponse(code = 404, message = &quot;No crypto was found.&quot;)
+    })
+    @GetMapping(&quot;/&quot;)
+    public ResponseEntity&lt;List&lt;NormalizedData&gt;&gt; getSortedCryptoData() {
+<span class="fc" id="L41">        return ResponseEntity.ok(cryptoDataService.getAllNormalizedData());</span>
+    }
+
+    @ApiOperation(value = &quot;Returns the oldest/newest/min/max values for a requested crypto&quot;)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = &quot;Successfully retrieved data.&quot;),
+            @ApiResponse(code = 404, message = &quot;No crypto was found for the given symbol.&quot;)
+    })
+    @GetMapping(&quot;/{symbol}&quot;)
+    public ResponseEntity&lt;CryptoDataSummary&gt; getSummaryBySymbol(
+            @ApiParam(value = &quot;Symbol of the crypto for which data is requested (ex: BTC)&quot;, required = true) @PathVariable String symbol) {
+<span class="fc" id="L52">        return Optional.ofNullable(cryptoDataService.getPriceSummary(symbol))</span>
+<span class="fc" id="L53">                .map(ResponseEntity::ok)</span>
+<span class="fc" id="L54">                .orElseGet(() -&gt; ResponseEntity.status(HttpStatus.NOT_FOUND).build());</span>
+    }
+
+    @ApiOperation(value = &quot;Returns the crypto with the highest normalized range for a specific day&quot;)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = &quot;Successfully retrieved data.&quot;),
+            @ApiResponse(code = 400, message = &quot;Invalid date format. Date should be in 'yyyy-MM-dd' format&quot;),
+            @ApiResponse(code = 404, message = &quot;No data was found for the given date.&quot;)
+    })
+    @GetMapping(&quot;/{date}/highest-normalized&quot;)
+    public ResponseEntity&lt;NormalizedData&gt; getHighestNormalizedDataForDate(
+            @ApiParam(value = &quot;Date should be in 'yyyy-MM-dd' format&quot;, required = true, example = &quot;2022-01-01&quot;) @PathVariable String date) {
+        LocalDate localDate;
+        try {
+<span class="fc" id="L68">            localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;));</span>
+<span class="fc" id="L69">        } catch (DateTimeParseException e) {</span>
+<span class="fc" id="L70">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Invalid date format.&quot;);</span>
+<span class="fc" id="L71">        }</span>
+<span class="fc" id="L72">        return Optional.ofNullable(cryptoDataService.getHighestNormalizedRangeForSpecificDay(localDate))</span>
+<span class="fc" id="L73">                .map(ResponseEntity::ok)</span>
+<span class="fc" id="L74">                .orElseGet(() -&gt; ResponseEntity.status(HttpStatus.NOT_FOUND).build());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SwaggerConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">crypto-recommendation-service</a> &gt; <a href="index.source.html" class="el_package">com.xm.cryptoservice.config</a> &gt; <span class="el_source">SwaggerConfig.java</span></div><h1>SwaggerConfig.java</h1><pre class="source lang-java linenums">package com.xm.cryptoservice.config;
+
+import java.util.Collections;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+@Configuration
+@EnableSwagger2
+<span class="fc" id="L19">public class SwaggerConfig {</span>
+
+    @Value(&quot;${swagger.title}&quot;)
+    private String title;
+
+    @Value(&quot;${swagger.description}&quot;)
+    private String description;
+
+    @Value(&quot;${swagger.version}&quot;)
+    private String version;
+
+    @Value(&quot;${swagger.termsOfServiceUrl}&quot;)
+    private String termsOfServiceUrl;
+
+    @Value(&quot;${swagger.contact.name}&quot;)
+    private String contactName;
+
+    @Value(&quot;${swagger.contact.url}&quot;)
+    private String contactUrl;
+
+    @Value(&quot;${swagger.contact.email}&quot;)
+    private String contactEmail;
+
+    @Value(&quot;${swagger.license}&quot;)
+    private String license;
+
+    @Value(&quot;${swagger.licenseUrl}&quot;)
+    private String licenseUrl;
+
+    @Bean
+    public Docket api() {
+<span class="fc" id="L50">        return new Docket(DocumentationType.SWAGGER_2)</span>
+<span class="fc" id="L51">                .apiInfo(apiInfo())</span>
+<span class="fc" id="L52">                .useDefaultResponseMessages(false)</span>
+<span class="fc" id="L53">                .select()</span>
+<span class="fc" id="L54">                .apis(RequestHandlerSelectors.basePackage(&quot;com.xm.cryptoservice.controller&quot;))</span>
+<span class="fc" id="L55">                .paths(PathSelectors.any())</span>
+<span class="fc" id="L56">                .build();</span>
+    }
+
+    private ApiInfo apiInfo() {
+<span class="fc" id="L60">        return new ApiInfo(</span>
+                title,
+                description,
+                version,
+                termsOfServiceUrl,
+                new Contact(contactName, contactUrl, contactEmail),
+                license,
+                licenseUrl,
+<span class="fc" id="L68">                Collections.emptyList());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
