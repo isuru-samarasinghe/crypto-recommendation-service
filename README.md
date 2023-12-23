@@ -44,7 +44,7 @@ To run the application in a Docker container, build the Docker image and run it:
 
 1. Build the project
 ```bash
-mvn package
+mvn clean install
 ```
 
 2. Build the Docker image
