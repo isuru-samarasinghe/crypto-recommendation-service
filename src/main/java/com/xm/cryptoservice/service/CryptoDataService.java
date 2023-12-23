@@ -20,6 +20,11 @@ import com.xm.cryptoservice.repository.CryptoDataRepository;
 import com.xm.cryptoservice.repository.CryptoDataSummaryRepository;
 import com.xm.cryptoservice.repository.NormalizedDataRepository;
 
+/**
+ * CryptoDataService class provides services related to cryptocurrency data.
+ * It includes methods for saving and retrieving crypto data, summaries, and
+ * normalized data.
+ */
 @Service
 public class CryptoDataService {
 
@@ -32,16 +37,29 @@ public class CryptoDataService {
     @Autowired
     private NormalizedDataRepository normalizedDataRepository;
 
+    /**
+     * Retrieves all symbols from the crypto data repository.
+     * 
+     * @return a list of all symbols
+     */
     public List<String> getAllSymbols() {
         return cryptoDataRepository.findAllSymbols();
     }
 
+    /**
+     * Saves a list of crypto data to the repository.
+     * 
+     * @param cryptoDataList the list of crypto data to save
+     */
     @Transactional
     public void saveCryptoData(List<CryptoData> cryptoDataList) {
         cryptoDataRepository.deleteAll();
         cryptoDataRepository.saveAll(cryptoDataList);
     }
 
+    /**
+     * Calculates and saves summaries for all symbols.
+     */
     @Transactional
     public void saveSummaries() {
         List<String> symbols = getAllSymbols();
@@ -54,6 +72,12 @@ public class CryptoDataService {
         cryptoDataSummaryRepository.saveAll(summaries);
     }
 
+    /**
+     * Calculates the price summary for a given symbol.
+     * 
+     * @param symbol the symbol to calculate the summary for
+     * @return the calculated price summary
+     */
     private CryptoDataSummary calculatePriceSummary(String symbol) {
 
         BigDecimal minPrice = cryptoDataRepository.findMinPriceBySymbol(symbol);
@@ -64,10 +88,19 @@ public class CryptoDataService {
         return new CryptoDataSummary(symbol, minPrice, maxPrice, oldestPrice, newestPrice);
     }
 
+    /**
+     * Retrieves the price summary for a given symbol.
+     * 
+     * @param symbol the symbol to retrieve the summary for
+     * @return the retrieved price summary
+     */
     public CryptoDataSummary getPriceSummary(String symbol) {
         return cryptoDataSummaryRepository.findById(symbol).orElse(null);
     }
 
+    /**
+     * Calculates and saves the normalized price range for all symbols.
+     */
     @Transactional
     public void saveNormalizedPriceRange() {
         List<NormalizedData> normalizedDataList = calculateNormalizedPriceRange();
@@ -75,6 +108,11 @@ public class CryptoDataService {
         normalizedDataRepository.saveAll(normalizedDataList);
     }
 
+    /**
+     * Calculates the normalized price range for all symbols.
+     * 
+     * @return a list of normalized data for all symbols
+     */
     private List<NormalizedData> calculateNormalizedPriceRange() {
         List<String> symbols = getAllSymbols();
 
@@ -87,10 +125,22 @@ public class CryptoDataService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Retrieves all normalized data, ordered by normalized range in descending
+     * order.
+     * 
+     * @return a list of all normalized data
+     */
     public List<NormalizedData> getAllNormalizedData() {
         return normalizedDataRepository.findAllOrderByNormalizedRangeDesc();
     }
 
+    /**
+     * Retrieves the normalized data with the highest range for a specific day.
+     * 
+     * @param date the date to retrieve the data for
+     * @return the normalized data with the highest range
+     */
     public NormalizedData getHighestNormalizedRangeForSpecificDay(LocalDate date) {
         Long startTimestamp = date.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
         Long endTimestamp = date.plusDays(1).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
@@ -111,6 +161,12 @@ public class CryptoDataService {
         return maxNormalizedData;
     }
 
+    /**
+     * Calculates the normalized price range for a list of crypto data.
+     * 
+     * @param cryptoDataList the list of crypto data to calculate the range for
+     * @return the calculated normalized price range
+     */
     private BigDecimal calculateNormalizedPriceRange(List<CryptoData> cryptoDataList) {
         BigDecimal minPrice = cryptoDataList.stream()
                 .min(Comparator.comparing(CryptoData::getPrice))

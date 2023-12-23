@@ -15,9 +15,22 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.xm.cryptoservice.model.CryptoData;
 
+/**
+ * CSVDataReader is a component responsible for reading CSV files from the
+ * classpath.
+ * It uses the OpenCSV library to parse the CSV files into CryptoData objects.
+ */
 @Component
 public class CSVDataReader {
 
+    /**
+     * Reads CSV files from the classpath and parses them into a list of CryptoData
+     * objects.
+     * 
+     * @return a list of CryptoData objects parsed from the CSV files
+     * @throws IOException if an I/O error occurs reading from the file or a
+     *                     malformed or unmappable byte sequence is read
+     */
     public List<CryptoData> readCryptoData() throws IOException {
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] resources = resolver.getResources("classpath:*.csv");

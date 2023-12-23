@@ -14,6 +14,11 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * SwaggerConfig class is responsible for configuring Swagger for the
+ * application.
+ * It sets up the API information and the base package for the controllers.
+ */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
@@ -45,6 +50,13 @@ public class SwaggerConfig {
     @Value("${swagger.licenseUrl}")
     private String licenseUrl;
 
+    /**
+     * This method configures the Docket bean which Swagger uses to generate the API
+     * documentation.
+     * It sets the API information and the base package for the controllers.
+     * 
+     * @return a Docket object configured for the application
+     */
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -56,6 +68,12 @@ public class SwaggerConfig {
                 .build();
     }
 
+    /**
+     * This method creates the ApiInfo object which contains information about the
+     * API.
+     * 
+     * @return an ApiInfo object with the API's information
+     */
     private ApiInfo apiInfo() {
         return new ApiInfo(
                 title,

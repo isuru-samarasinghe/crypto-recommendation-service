@@ -12,6 +12,12 @@ import com.google.common.util.concurrent.RateLimiter;
 import com.xm.cryptoservice.exception.RateLimitException;
 import com.xm.cryptoservice.service.RateLimitService;
 
+/**
+ * RateLimitInterceptor class is responsible for limiting the rate of requests
+ * to the application.
+ * It uses a RateLimiter to limit the rate of requests based on the IP address
+ * of the request.
+ */
 @Component
 public class RateLimitInterceptor implements HandlerInterceptor {
 
@@ -21,6 +27,15 @@ public class RateLimitInterceptor implements HandlerInterceptor {
     @Value("${service.rate.limit}")
     private double rateLimit;
 
+    /**
+     * This method is called before the actual handler is executed.
+     * It checks if the rate limit for the IP address of the request has been
+     * exceeded.
+     * If the rate limit has been exceeded, it throws a RateLimitException.
+     * 
+     * @return true if the execution chain should proceed with the next interceptor
+     *         or the handler itself.
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
@@ -34,7 +49,11 @@ public class RateLimitInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    // used for unit tests
+    /**
+     * This method is used for unit tests to set the RateLimitService.
+     * 
+     * @param rateLimitService the RateLimitService to set
+     */
     public void setRateLimitService(RateLimitService rateLimitService) {
         this.rateLimitService = rateLimitService;
     }

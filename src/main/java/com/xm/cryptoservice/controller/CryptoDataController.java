@@ -24,6 +24,12 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+/**
+ * CryptoDataController class is responsible for handling HTTP requests related
+ * to crypto data.
+ * It provides endpoints for retrieving sorted crypto data, summary by symbol,
+ * and highest normalized data for a specific date.
+ */
 @RestController
 @RequestMapping("/api/v1/crypto")
 public class CryptoDataController {
@@ -31,6 +37,12 @@ public class CryptoDataController {
     @Autowired
     private CryptoDataService cryptoDataService;
 
+    /**
+     * This method handles GET requests to retrieve a descending sorted list of all
+     * the cryptos, comparing the normalized range.
+     * 
+     * @return a ResponseEntity with the list of NormalizedData
+     */
     @ApiOperation(value = "Returns a descending sorted list of all the cryptos, comparing the normalized range (i.e. (max-min)/min)")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved data."),
@@ -41,6 +53,13 @@ public class CryptoDataController {
         return ResponseEntity.ok(cryptoDataService.getAllNormalizedData());
     }
 
+    /**
+     * This method handles GET requests to retrieve the oldest/newest/min/max values
+     * for a requested crypto.
+     * 
+     * @param symbol the symbol of the crypto for which data is requested
+     * @return a ResponseEntity with the CryptoDataSummary
+     */
     @ApiOperation(value = "Returns the oldest/newest/min/max values for a requested crypto")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved data."),
@@ -54,6 +73,13 @@ public class CryptoDataController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
+    /**
+     * This method handles GET requests to retrieve the crypto with the highest
+     * normalized range for a specific day.
+     * 
+     * @param date the date for which the data is requested
+     * @return a ResponseEntity with the NormalizedData
+     */
     @ApiOperation(value = "Returns the crypto with the highest normalized range for a specific day")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved data."),
