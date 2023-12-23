@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.xm.cryptoservice.service.CryptoDataServiceTest
--------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.135 s - in com.xm.cryptoservice.service.CryptoDataServiceTest
