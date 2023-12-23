@@ -81,6 +81,10 @@ mvn test jacoco:report
 
 This will generate a report in `target/site/jacoco/index.html`. Open this file in a web browser to view the report.
 
+Initial coverage report.
+
+![image](https://github.com/isuru-samarasinghe/crypto-recommendation-service/assets/59447165/e2b2de38-0d4d-462e-a630-f60227a940ad)
+
 
 ## Built With
 
