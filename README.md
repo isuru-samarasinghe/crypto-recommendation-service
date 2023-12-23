@@ -34,7 +34,7 @@ mvn clean install
 java -jar target/crypto-recommendation-service-1.0-SNAPSHOT.jar
 ```
 
-The application will start running at `http://localhost:8080`.
+The application will start running at `http://localhost:8080/swagger-ui.html`.
 
 If you want to run the application using `mvn spring-boot:run` command, makesure to copy `application.properties` to the root of the project.
 
