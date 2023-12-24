@@ -3,12 +3,12 @@
 This is a Java 8 and Spring Boot application that provides a recommendation service for cryptocurrencies. When you start the application (and every day at midnight) the service reads prices from CSV files, calculates various statistics for each cryptocurrency, and stores that data in the H2 in-memory database. The application also exposes several endpoints for retrieving this data.
 
 ### Important things to know
-- CSV files are stored in [src/main/resources]([url](https://github.com/isuru-samarasinghe/crypto-recommendation-service/tree/main/src/main/resources)) directory
+- CSV files are stored in [src/main/resources](https://github.com/isuru-samarasinghe/crypto-recommendation-service/tree/main/src/main/resources) directory
 - If you add more CSV files with different crypto, the application will read them automatically
 - If a given CSV file(s) has data of more than a month (6 months, a year), the application will process them accordingly
 - If the user requests data of a crypto that is not available, the service will provide an appropriate error with 404 code
 - The application is dockerized, so it can be used with Kubernetes
-- The application will throw [429 Too Many Requests]([url](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429)) error if a given user exceeds this [service.rate.limit]([url](https://github.com/isuru-samarasinghe/crypto-recommendation-service/blob/main/src/main/resources/application.properties#L35))
+- The application will throw [429 Too Many Requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) error if a given user exceeds this [service.rate.limit](https://github.com/isuru-samarasinghe/crypto-recommendation-service/blob/main/src/main/resources/application.properties#L35)
 
 
 ## Getting Started
